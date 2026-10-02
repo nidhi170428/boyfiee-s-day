@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Cutuu 💗</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"DM Sans",sans-serif;background:#fff4f7;color:#242024}
+body{overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:28px 18px;position:relative;overflow:hidden}
+.screen.active{display:flex}
+.bg-blobs:before,.bg-blobs:after{content:"";position:absolute;border-radius:50%;filter:blur(5px);opacity:.45;pointer-events:none}
+.bg-blobs:before{width:330px;height:330px;background:#ffd1df;top:-100px;left:-120px}
+.bg-blobs:after{width:380px;height:380px;background:#ffe3c7;right:-150px;bottom:-150px}
+
+.card{width:min(720px,94vw);background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.9);border-radius:30px;box-shadow:0 24px 70px rgba(97,47,66,.13);padding:34px;position:relative;z-index:1}
+.center{text-align:center}
+.eyebrow{letter-spacing:.2em;text-transform:uppercase;font-size:.72rem;color:#a56b7d;font-weight:700}
+h1,h2{font-family:"Playfair Display",serif;margin:10px 0}
+h1{font-size:clamp(2.2rem,7vw,4.5rem);line-height:1}
+h2{font-size:clamp(2rem,5vw,3rem)}
+p{line-height:1.65}
+.muted{color:#8b7880}
+
+.passcode-wrap{max-width:420px;margin:auto}
+.lock{font-size:4rem;margin-bottom:4px}
+.code-input{width:100%;padding:16px 18px;border:2px solid #f0d4dd;border-radius:16px;background:#fff;text-align:center;font-size:1.15rem;letter-spacing:.18em;outline:none}
+.code-input:focus{border-color:#df91aa;box-shadow:0 0 0 5px rgba(223,145,170,.13)}
+.primary{background:#dc7f9d;color:white;padding:14px 25px;border-radius:999px;font-weight:700;box-shadow:0 10px 25px rgba(220,127,157,.25);transition:.2s}
+.primary:hover{transform:translateY(-2px)}
+.error{height:24px;color:#c85b78;font-size:.88rem;margin-top:10px}
+
+.gift-cat{font-size:5rem;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-7px) rotate(2deg)}}
+.pill-row{display:flex;gap:12px;justify-content:center;margin-top:22px;position:relative;min-height:54px}
+.pill{background:#f1a8bb;color:white;border-radius:999px;padding:12px 28px;font-weight:700;transition:.2s}
+.pill.no{background:#e9c0cb;color:#8c5365;position:relative}
+.pill:hover{transform:scale(1.04)}
+
+.gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:25px}
+.gift{min-height:190px;border-radius:24px;background:linear-gradient(145deg,#fff,#fff0f4);border:1px solid #f5d9e1;box-shadow:0 12px 30px rgba(126,65,82,.09);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:.25s}
+.gift:hover{transform:translateY(-7px) rotate(-1deg)}
+.gift .box{font-size:4rem}
+.gift span{font-weight:700;color:#9c6374;margin-top:8px}
+@media(max-width:650px){.gifts{grid-template-columns:1fr}.gift{min-height:150px}}
+
+.modal{position:fixed;inset:0;background:rgba(41,22,29,.52);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
+.modal.show{display:flex}
+.modal-card{background:white;border-radius:28px;padding:30px;max-width:520px;width:100%;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,.25)}
+.modal-card .big{font-size:4.5rem}
+.close{margin-top:15px;background:#f4e3e8;color:#754958;padding:11px 20px;border-radius:999px;font-weight:700}
+
+.envelope-area{text-align:center}
+.envelope{width:min(520px,88vw);height:310px;margin:28px auto 15px;position:relative;cursor:pointer;filter:drop-shadow(0 20px 30px rgba(100,44,59,.15))}
+.env-body{position:absolute;inset:35px 0 0;background:#ffd8e2;border-radius:8px;overflow:hidden}
+.env-body:after,.env-body:before{content:"";position:absolute;bottom:0;width:0;height:0;border-style:solid}
+.env-body:before{left:0;border-width:150px 260px 0 0;border-color:#f6c0cf transparent transparent transparent}
+.env-body:after{right:0;border-width:0 260px 150px 0;border-color:transparent #f8c7d5 transparent transparent}
+.flap{position:absolute;left:0;right:0;top:35px;margin:auto;width:0;height:0;border-left:260px solid transparent;border-right:260px solid transparent;border-top:155px solid #f3b6c7;z-index:2;transform-origin:top;transition:.7s}
+.heart-seal{position:absolute;z-index:3;left:50%;top:137px;transform:translateX(-50%);font-size:4rem;transition:.5s}
+.envelope.open .flap{transform:rotateX(180deg)}
+.envelope.open .heart-seal{transform:translateX(-50%) scale(.7);opacity:.2}
+.tap{font-size:.9rem;color:#9a7480}
+
+.letter-screen{align-items:flex-start;padding-top:45px}
+.letter{background:#fffaf1;border:1px solid #eadfcf;max-width:820px;width:100%;padding:clamp(24px,5vw,58px);border-radius:8px;box-shadow:0 25px 70px rgba(70,40,25,.15);position:relative}
+.letter:before{content:"";position:absolute;inset:12px;border:1px dashed #e5cdbb;pointer-events:none}
+.letter h2{text-align:center;font-size:clamp(2rem,5vw,3.4rem);color:#7b4e58}
+.letter .salute{text-align:center;color:#ad687a;font-family:"Playfair Display",serif;font-size:1.25rem}
+.letter p{font-size:1.02rem;white-space:pre-line;position:relative;z-index:1}
+.letter .signature{text-align:center;font-family:"Playfair Display",serif;font-size:1.5rem;color:#9d586d;margin-top:25px}
+
+.bouquet{text-align:center}
+.simple-bouquet{margin:25px auto 15px;padding:20px;border-radius:24px;background:#fff8fa;border:1px solid #f2dce3}
+.flowers-top,.flowers-mid{font-size:3.4rem;line-height:1.25;letter-spacing:.08em}
+.flowers-mid{margin-top:2px}
+
+.red{color:#d65b72}
+
+.final-card{max-width:850px}
+.love-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:24px}
+.love-item{padding:18px;border-radius:20px;background:#fff5f7;border:1px solid #f5dbe2}
+.love-item b{display:block;color:#9c5f72;margin-bottom:5px}
+@media(max-width:600px){.love-grid{grid-template-columns:1fr}.card{padding:25px 19px}}
+.next{margin-top:25px}
+.hidden{display:none!important}
+.confetti{position:fixed;top:-20px;font-size:20px;z-index:20;animation:fall 3s linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(500deg);opacity:0}}
+
+.love-counter{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+.love-counter>div{background:#fff8fa;border:1px solid #f2dce3;border-radius:18px;padding:16px 8px}
+.love-counter strong{display:block;font-size:2rem;color:#d85b7f}
+.love-counter span{font-size:.85rem;color:#777}
+@media(max-width:600px){.love-counter{grid-template-columns:repeat(2,1fr)}}
+
+</style>
+</head>
+<body>
+
+<section id="s1" class="screen active bg-blobs">
+  <div class="card center passcode-wrap">
+    <div class="lock">🔐</div>
+    <div class="eyebrow">A tiny secret made just for you</div>
+    <h1>Before you enter...</h1>
+    <p class="muted">You need the one date that started this little universe.</p>
+    <input id="code" class="code-input" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" aria-label="Passcode">
+    <button class="primary" style="margin-top:15px" onclick="unlock()">OPEN MY GIFT 💗</button>
+    <div id="err" class="error"></div>
+  </div>
+</section>
+
+<section id="s2" class="screen bg-blobs">
+  <div class="card center">
+    <div class="gift-cat">🐱💐</div>
+    <h2>PLS ACCEPT THE GIFT</h2>
+    <p class="muted">There is absolutely no pressure. Except... there is a little pressure. 😭</p>
+    <div class="pill-row">
+      <button class="pill" onclick="go(3)">YES 💗</button>
+      <button id="noBtn" class="pill no" onmouseenter="runAway()" onclick="runAway()">NO 😭</button>
+    </div>
+  </div>
+</section>
+
+<section id="s3" class="screen bg-blobs">
+  <div class="card center">
+    <h2>GIFT FOR YOU 🎁</h2>
+    <p class="muted">Pick any one. The website has opinions, but it won't tell you which one to pick.</p>
+    <div class="gifts">
+      <button class="gift" onclick="gift(1)"><div class="box">🎁</div><span>Gift One</span></button>
+      <button class="gift" onclick="gift(2)"><div class="box">🎁</div><span>Gift Two</span></button>
+      <button class="gift" onclick="gift(3)"><div class="box">🎁</div><span>Gift Three</span></button>
+    </div>
+  </div>
+</section>
+
+<div id="modal" class="modal">
+  <div class="modal-card">
+    <div id="modalBig" class="big">💌</div>
+    <h2 id="modalTitle">A little surprise</h2>
+    <p id="modalText"></p>
+    <button class="close" onclick="closeModal()">OPEN THE REAL SURPRISE →</button>
+  </div>
+</div>
+
+<section id="s4" class="screen bg-blobs">
+  <div class="card envelope-area">
+    <h2>For your eyes only 💌</h2>
+    <p class="muted">Tap the envelope. Yes, the envelope is being dramatic.</p>
+    <div id="envelope" class="envelope" onclick="openLetter()">
+      <div class="env-body"></div>
+      <div class="flap"></div>
+      <div class="heart-seal">❤️</div>
+    </div>
+    <div class="tap">CLICK THE ENVELOPE TO OPEN</div>
+  </div>
+</section>
+
+<section id="s5" class="screen letter-screen bg-blobs">
+  <article class="letter">
+    <h2>My letter to you</h2>
+    <div class="salute">Happieee Boyfriendsss Dayyy, my cutuu 💗</div>
+    <p>
+HAPPPIEEE BOYFRIENDSSS DAYYY MYYY CUTUU KUCHUU PUCHUUU BHONDUU BUDHHUUU BUGGU MUGGUUU BOYYYFFIEEEEE
+
+Phle to i loveee youuu soo sooo soooo muchhh babyyy 💋💋💋💋
+
+Aapp se acha koi nhi you are the best boyfie in the world apko to award milna chahiye best boyfren kaa aap mujhse kn chupate sab btate ho sachi sachi, you are gentleman but only for mee owkayy, itnee cutuu se ho aapp man to krta hai bs puchi dete rhu apko 😝 or dikhte to kya hi ho mashallahh chummaa🤭 ywr sahi me lottery lg gyi meri to mtlb adhi lottery lagi thi adha mene sudhar diya apko hehe mtlb aap khud sudhre 😛
+
+you are my cutie babyy, my babygurl, my princess, my boyfiee, my mann, my everythingg muahhh muahh muahh 💋💋
+
+Or apke voice notes ki to me sadiyooo se diwani huu hu pta hi hai apko youu makee my ordinary days better.
+
+Jis din hum mile like 1.5 saal hogya ig mile hue tab dekhte hi my heartt started beating soo fast like it will come out the next sec and then you hugged me, we held hands. It was my first for everything and i am so glad it was youu! 😭
+
+me to sote jagte uthte bethe apke bare me hi sochti hu.... bk ke baad i to totally gave up on us but you didnt and somehow that made me love you even moree 😭❤️
+
+I LOVEEEEEEEEEEEE YOUUUUUUUUUUUU SOOOOOOOO MUCHHHHHHH MUCHHHHHHHHHH MYYYY BABYYYY 💋💋💋
+
+HAPPY BOYFRENS DAY MY CUTUUU 💗💗💗
+
+Idhr hote to mst chummiiyaa de deti 😝
+    </p>
+    <div class="signature">Always your biggest fan 💗</div>
+    <div class="center next"><button class="primary" onclick="go(6)">NEXT SURPRISE 🌷</button></div>
+  </article>
+</section>
+
+<section id="s6" class="screen bg-blobs">
+  <div class="card bouquet center">
+    <div class="simple-bouquet">
+      <div class="flowers-top">🌷 🌺 🌻</div>
+      <div class="flowers-mid">🌼 🌸 🌹</div>
+    </div>
+    <h2>Phoolss for my fool 😘</h2>
+    <button class="primary next" onclick="go(7)">ONE LAST THING 💗</button>
+  </div>
+</section>
+
+<section id="s7" class="screen bg-blobs">
+  <div class="card final-card">
+    <div class="center">
+      <div class="eyebrow">The final page</div>
+      <h2>Things I love about you</h2>
+      <p class="muted">A tiny list. The actual list is probably illegal in length.</p>
+    </div>
+    <div class="love-grid">
+      <div class="love-item"><b>Your eyes 👀</b>I could stare forever jab ki me us din nhi dekh payi thi shy arha tha na 👉🏻👈🏻</div>
+      <div class="love-item"><b>Your voice notes 🎧</b>Umm hmmm 🤭 yk what it does to me.</div>
+      <div class="love-item"><b>Your smile 😊</b>The bestt things I have ever seen.</div>
+      <div class="love-item"><b>Your humour 😂</b>Because somehow you always manage to make me laugh.</div>
+      <div class="love-item"><b>Your crazyness 🤪</b>The wonderfully chaotic part of you.</div>
+      <div class="love-item"><b>Your childishness 🧸</b>The cute side I never want you to lose.</div>
+      <div class="love-item"><b>Your gentleman side 🎩</b>Apparently this feature is available exclusively for me. 😌</div>
+      <div class="love-item"><b>Your gf 😝</b>Yes, me. I had to include myself in the official list.</div>
+      <div class="love-item"><b>Your gf's bf 😭</b>Because obviously this deserves its own category.</div>
+      <div class="love-item"><b>Your everythinggg 💗</b>All the little things that make you, you.</div>
+    </div>
+    <div class="center" style="margin-top:28px">
+      <h2 class="red">HAPPY BOYFRIEND'S DAY 💗</h2>
+      <p></p>
+      <button class="primary" onclick="location.reload()">REPLAY FROM THE START ↻</button>
+      <button class="primary" onclick="go(8)" style="margin-left:10px">ONE MORE THING ❤️</button>
+    </div>
+  </div>
+</section>
+
+<script>
+const screens = [null,...document.querySelectorAll('.screen')];
+
+function go(n){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function unlock(){
+  const v = document.getElementById("code").value.trim();
+  const err = document.getElementById("err");
+  const normalized = v.replace(/[\/\-.\s]/g, "");
+  if (normalized === "24092024" || normalized === "240924") {
+    err.textContent = "";
+    go(2);
+  } else {
+    err.textContent = "Nope 😭 Hint: the special date is DD/MM/YYYY.";
+  }
+}
+document.getElementById('code').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
+
+let noCount=0;
+function runAway(){
+  const b=document.getElementById('noBtn');
+  noCount++;
+  if(noCount<5){
+    b.style.transform=`translate(${(Math.random()*180)-90}px, ${(Math.random()*70)-35}px) rotate(${(Math.random()*18)-9}deg)`;
+    b.textContent=["NO 😭","are you sure?","really??","think again 😭","okay fine 😔"][noCount];
+  }else{
+    b.textContent="YES 💗";
+    b.onclick=()=>{go(3)};
+    b.onmouseenter=null;
+    b.style.transform="none";
+  }
+}
+
+function gift(n){
+  const data={
+    1:["💌","A secret message","The real surprise is waiting inside the envelope."],
+    2:["🌷","A tiny bouquet","Virtual flowers because apparently the internet still hasn't invented teleportation."],
+    3:["💿","A little memory","Some people collect souvenirs. We collect moments."]
+  };
+  document.getElementById('modalBig').textContent=data[n][0];
+  document.getElementById('modalTitle').textContent=data[n][1];
+  document.getElementById('modalText').textContent=data[n][2];
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('show');
+  go(4);
+}
+function openLetter(){
+  const env=document.getElementById('envelope');
+  env.classList.add('open');
+  setTimeout(()=>go(5),500);
+}
+</script>
+
+<section id="s8" class="screen bg-blobs">
+  <div class="card final-card center">
+    <div class="eyebrow">One more little thing 💗</div>
+    <h2>🗓️ Special Date: 24 / 09 / 2024</h2>
+    <p class="muted">We've been in love for:</p>
+
+    <div class="love-counter">
+      <div><strong id="days">...</strong><span>Days</span></div>
+      <div><strong id="hours">...</strong><span>Hours</span></div>
+      <div><strong id="minutes">...</strong><span>Minutes</span></div>
+      <div><strong id="seconds">...</strong><span>Seconds</span></div>
+    </div>
+
+    <h3>...and falling in love more and more every single day! ♾️❤️</h3>
+  </div>
+</section>
+
+
+<script>
+(function(){
+  const start = new Date(2024, 8, 24, 0, 0, 0);
+  function updateLoveCounter(){
+    let diff = Date.now() - start.getTime();
+    if(diff < 0) diff = 0;
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const d = document.getElementById("days");
+    const h = document.getElementById("hours");
+    const m = document.getElementById("minutes");
+    const s = document.getElementById("seconds");
+    if(d){ d.textContent = days; h.textContent = hours; m.textContent = minutes; s.textContent = seconds; }
+  }
+  updateLoveCounter();
+  setInterval(updateLoveCounter, 1000);
+})();
+</script>
+
+</body>
+</html>
